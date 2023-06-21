@@ -1,0 +1,28 @@
+#ifndef CROSS_VALUES_CROSS_VALUES_H
+#define CROSS_VALUES_CROSS_VALUES_H
+
+<% CV.archs.each do |arch| -%>
+#include "generated_values/<%= arch[0] %>_values_gen.h"
+<% end %>
+#include <cstddef>
+#include <cstdlib>
+
+namespace cross_values {
+
+<% CV.asm_defines.each do | define | -%>
+    [[maybe_unused]] static constexpr ptrdiff_t Get<%= define[0].split('_').collect(&:capitalize).join%>(Arch arch)
+    {
+        switch (arch) {
+        <%- CV.archs.each do |arch| -%>
+            case Arch::<%= arch[0] %>:
+                return <%= arch[0] %>::<%= define[0] %>_VAL;
+        <%- end -%>
+            default: {
+                std::cerr << "No cross-values generated for arch(" << arch << ")" << std::endl;
+                abort();
+            }
+        }
+    }
+<% end %>
+}  // namespace cross_values
+#endif  // CROSS_VALUES_CROSS_VALUES_H

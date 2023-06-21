@@ -1,0 +1,11 @@
+#ifndef CROSS_VALUES_GENERATED_VALUES_<%= CV.arch %>_VALUES_GEN_H
+#define CROSS_VALUES_GENERATED_VALUES_<%= CV.arch %>_VALUES_GEN_H
+
+namespace cross_values::<%= CV.arch %> {
+
+<% CV.libasm_defines.each do | asm_def | -%>
+    static constexpr ptrdiff_t <%= asm_def[0] %>_VAL = <%= asm_def[1] %>;
+<% end %>
+
+}  // namespace cross_values::<%= CV.arch %>
+#endif  // CROSS_VALUES_GENERATED_VALUES_<%= CV.arch %>_VALUES_GEN_H
